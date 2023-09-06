@@ -1,6 +1,6 @@
 <template>
-  <div class="pt-12 grid grid-cols-3 gap-x-8">
-    <aside>
+  <div class="pt-12 flex flex-col gap-x-8">
+    
       <h2 class="sr-only">Filters</h2>
       <div class="block">
         <form class="space-y-10 divide-y divide-gray-200">
@@ -126,7 +126,7 @@
           </transition>
         </Menu>
       </div>
-    </aside>
+    
   </div>
 </template>
 
