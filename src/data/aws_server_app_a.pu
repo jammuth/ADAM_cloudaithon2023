@@ -1,0 +1,17 @@
+@startuml
+node aws_server_app_a #08e89e [
+
+<b>app_a
+
+----
+<i><b>id
+    instance-id: i-a3b45c6e7477
+    owner: James A
+    region: eu-west
+
+....
+<i><b>cost
+    cost: $12,846pm
+    region: eu-west
+]
+@enduml

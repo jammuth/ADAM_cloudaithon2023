@@ -1,132 +1,141 @@
 <template>
   <div class="pt-12 flex flex-col gap-x-8">
-    
-      <h2 class="sr-only">Filters</h2>
-      <div class="block">
-        <form class="space-y-10 divide-y divide-gray-200">
-          <div>
-            <fieldset>
-              <legend class="w-full text-sm font-medium text-gray-900">
-                Declaring Element
-              </legend>
-              <div class="space-y-0">
-                <div
-                  v-for="(option, optionIdx) in styles"
-                  :key="option.value"
-                  class="flex items-center"
-                >
-                  <input
-                    :id="`style-${optionIdx}`"
-                    name="style[]"
-                    :value="option.value"
-                    type="radio"
-                    :checked="option.default"
-                    class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                    v-on:change="selectStyle(option)"
-                  />
-                  <label
-                    :for="`style-${optionIdx}`"
-                    class="ml-3 text-sm text-gray-600"
-                    >{{ option.label }}</label
-                  >
-                </div>
-              </div>
-            </fieldset>
-          </div>
-        </form>
-      </div>
-      Metadata:
-      <div class="m-2 p-2">
-        <div class="relative">
-          <label
-            for="name"
-            class="absolute -top-2 left-2 inline-block bg-white px-1 text-xs font-medium text-gray-900"
-            >Name</label
+    Metadata:
+    <div class="flex flex-col m-2 p-2">
+    <div class="py-2 flex justify-between align-middle text-center">
+      <Menu as="div" class="relative inline-block text-left">
+        <div>
+          <MenuButton
+            class="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
           >
-          <input
-            v-model="assetDefinition.metadata.name"
-            type="text"
-            name="name"
-            id="name"
-            class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-            placeholder="folder A"
-          />
+            Declaring Element
+            <ChevronDownIcon
+              class="-mr-1 h-5 w-5 text-gray-400"
+              aria-hidden="true"
+            />
+          </MenuButton>
         </div>
-        <div class="relative">
-          <label
-            for="name"
-            class="absolute -top-2 left-2 inline-block bg-white px-1 text-xs font-medium text-gray-900"
-            >Title</label
+        <transition
+          enter-active-class="transition ease-out duration-100"
+          enter-from-class="transform opacity-0 scale-95"
+          enter-to-class="transform opacity-100 scale-100"
+          leave-active-class="transition ease-in duration-75"
+          leave-from-class="transform opacity-100 scale-100"
+          leave-to-class="transform opacity-0 scale-95"
+        >
+          <MenuItems
+            class="absolute right-0 z-10 mt-2 w-56 flex-wrap origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
           >
-          <input
-            v-model="assetDefinition.metadata.title"
-            type="text"
-            name="name"
-            id="name"
-            class="block w-full rounded-md border-0 my-3 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-            placeholder="folder A"
-          />
-        </div>
-
-        <Menu as="div" class="relative inline-block text-left">
-          <div>
-            <MenuButton
-              class="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-            >
-              Background Color
-              <ChevronDownIcon
-                class="-mr-1 h-5 w-5 text-gray-400"
-                aria-hidden="true"
-              />
-            </MenuButton>
-          </div>
-
-          <transition
-            enter-active-class="transition ease-out duration-100"
-            enter-from-class="transform opacity-0 scale-95"
-            enter-to-class="transform opacity-100 scale-100"
-            leave-active-class="transition ease-in duration-75"
-            leave-from-class="transform opacity-100 scale-100"
-            leave-to-class="transform opacity-0 scale-95"
-          >
-            <MenuItems
-              class="absolute right-0 z-10 mt-2 w-56 flex-wrap origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
-            >
+            <div v-for="(option, optionIdx) in styles" :key="optionIdx">
               <MenuItem v-slot="{ active }">
                 <a
-                  v-on:click="removeBGColor()"
+                  v-on:click="selectStyle(option)"
                   href="#"
                   :class="[
                     active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
                     'block px-4 py-2 text-sm',
                   ]"
                 >
-                  Remove Background Color
+                  <p>{{ option.value }}</p>
                 </a>
               </MenuItem>
-              <div
-                class="py-1"
-                v-for="(color, colorIdx) in colors"
-                :key="colorIdx"
+            </div>
+          </MenuItems></transition
+        >
+      </Menu>
+      <p >{{ assetDefinition.metadata.type }}</p>
+    </div>
+    <div class="py-1">
+      <div class="relative ">
+        <label
+          for="name"
+          class="absolute -top-2 left-2 inline-block bg-white px-1 text-xs font-medium text-gray-900"
+          >Name</label
+        >
+        <input
+          v-model="assetDefinition.metadata.name"
+          type="text"
+          name="name"
+          id="name"
+          class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+          placeholder="folder A"
+        />
+      </div></div>
+      <div class="py-1">
+      <div class="relative">
+        <label
+          for="name"
+          class="absolute -top-2 left-2 inline-block bg-white px-1 text-xs font-medium text-gray-900"
+          >Title</label
+        >
+        <input
+          v-model="assetDefinition.metadata.title"
+          type="text"
+          name="name"
+          id="name"
+          class="block w-full rounded-md border-0 my-3 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+          placeholder="folder A"
+        />
+      </div></div>
+
+      <Menu as="div" class="relative inline-block text-left">
+        <div>
+          <MenuButton
+            class="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+          >
+            Background Color
+            <ChevronDownIcon
+              class="-mr-1 h-5 w-5 text-gray-400"
+              aria-hidden="true"
+            />
+          </MenuButton>
+        </div>
+
+        <transition
+          enter-active-class="transition ease-out duration-100"
+          enter-from-class="transform opacity-0 scale-95"
+          enter-to-class="transform opacity-100 scale-100"
+          leave-active-class="transition ease-in duration-75"
+          leave-from-class="transform opacity-100 scale-100"
+          leave-to-class="transform opacity-0 scale-95"
+        >
+          <MenuItems
+            class="absolute right-0 z-10 mt-2 w-56 flex-wrap origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+          >
+            <MenuItem v-slot="{ active }">
+              <a
+                v-on:click="removeBGColor()"
+                href="#"
+                :class="[
+                  active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
+                  'block px-4 py-2 text-sm',
+                ]"
               >
-                <MenuItem v-slot="{ active }">
-                  <a
-                    v-on:click="setBGColor(color)"
-                    href="#"
-                    :class="[
-                      active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                      'block px-4 py-2 text-sm',
-                    ]"
-                  >
-                    <ColorOption :fillcolor="color.value" />
-                  </a>
-                </MenuItem>
-              </div>
-            </MenuItems>
-          </transition>
-        </Menu>
-      </div>
-    
+                Remove Background Color
+              </a>
+            </MenuItem>
+            <div
+              class="py-1"
+              v-for="(color, colorIdx) in colors"
+              :key="colorIdx"
+            >
+              <MenuItem v-slot="{ active }">
+                <a
+                  v-on:click="setBGColor(color)"
+                  href="#"
+                  :class="[
+                    active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
+                    'block px-4 py-2 text-sm',
+                  ]"
+                >
+                  <ColorOption :fillcolor="color.value" />
+                </a>
+              </MenuItem>
+            </div>
+          </MenuItems>
+        </transition>
+      </Menu>
+    </div>
   </div>
 </template>
 
