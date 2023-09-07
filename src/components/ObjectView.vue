@@ -16,7 +16,6 @@
         class="mx-2 px-2"
         type="radio"
         value="yml"
-        disabled
         v-model="picked"
       /><label for="yaml">YAML</label>
       <input
@@ -38,6 +37,16 @@
       :key="componentKey"
       >{{ JSON.stringify(appStore.assetDefinition, null, 4) }}</textarea
     >
+    <textarea
+      readonly
+      class="h-max"
+      name="preview"
+      id="preview"
+      rows="50"
+      v-if="picked == 'yml'"
+      :key="componentKey"
+      >{{ asset_as_yml }}</textarea
+    >
     <div v-if="picked == 'uml'">
       <img
         id="background_image"
@@ -56,18 +65,24 @@ import { storeToRefs } from 'pinia';
 import { watch } from 'vue';
 import { useAppStore } from '@/stores/AppStore';
 const appStore = useAppStore();
-const { currentColor, assetDefinition } = storeToRefs(appStore);
+const { currentColor } = storeToRefs(appStore);
 
 const componentKey = ref(0);
 const picked = ref('json');
+const getYML = async () => {
+return await appStore.getYML();
+}
+
+const asset_yml = getYML();
+let asset_as_yml = ref(asset_yml);
+
+
+
 
 const forceRerender = () => {
   componentKey.value += 1;
 };
 
-const backgroundImageClass = storeToRefs(
-  `w-full h-full bg-[url(${appStore.assetDefinition.metadata.type}.svg)]`
-);
 
 watch(currentColor, () => {
   console.log('test color');
@@ -78,4 +93,13 @@ watch(appStore.assetDefinition, () => {
   console.log('test asset');
   forceRerender();
 });
+
+watch(appStore.assetDefinition, async () => {
+  console.log('test asset async');
+  asset_as_yml = await appStore.getYML();
+  forceRerender();
+});
+
 </script>
+
+
