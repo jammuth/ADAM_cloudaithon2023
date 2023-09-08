@@ -47,15 +47,16 @@
       :key="componentKey"
       >{{ asset_as_yml }}</textarea
     >
-    <div v-if="picked == 'uml'">
-      <img
-        id="background_image"
-        :src="`/${appStore.assetDefinition.metadata.type}.svg`"
-        alt=""
-        :class="currentColor"
-        :key="componentKey"
-      />
-    </div>
+    <textarea
+      readonly
+      class="h-max"
+      name="preview"
+      id="preview"
+      rows="50"
+      v-if="picked == 'uml'"
+      :key="componentKey"
+      >{{ asset_as_uml }}</textarea
+    >
   </div>
 </template>
 
@@ -69,37 +70,34 @@ const { currentColor } = storeToRefs(appStore);
 
 const componentKey = ref(0);
 const picked = ref('json');
+
+const getUML = async () => {
+  return await appStore.getUML();
+};
+
+const asset_uml = getUML();
+let asset_as_uml = ref(asset_uml);
+
 const getYML = async () => {
-return await appStore.getYML();
-}
+  return await appStore.getYML();
+};
 
 const asset_yml = getYML();
 let asset_as_yml = ref(asset_yml);
 
-
-
-
 const forceRerender = () => {
   componentKey.value += 1;
 };
-
 
 watch(currentColor, () => {
   console.log('test color');
   forceRerender();
 });
 
-watch(appStore.assetDefinition, () => {
-  console.log('test asset');
-  forceRerender();
-});
-
 watch(appStore.assetDefinition, async () => {
   console.log('test asset async');
   asset_as_yml = await appStore.getYML();
+  asset_as_uml = await appStore.getUML();
   forceRerender();
 });
-
 </script>
-
-

@@ -1,29 +1,29 @@
-import { createPinia } from "pinia";
-import { createRouter, createWebHistory } from "vue-router";
-import { createApp } from "vue";
-import App from "./App.vue";
-import Home from "@/views/Home.vue";
-import EntityDesigner from "@/views/EntityDesigner.vue";
-import AssetModeling from "@/views/AssetModeling.vue";
-import "./styles/style.css";
+import AssetDesigner from '@/views/AssetDesigner.vue';
+import AssetModels from '@/views/AssetModels.vue';
+import Home from '@/views/Home.vue';
+import { createPinia } from 'pinia';
+import { createApp } from 'vue';
+import { createRouter, createWebHistory } from 'vue-router';
+import App from './App.vue';
+import './styles/style.css';
 const pinia = createPinia();
 const router = createRouter({
   history: createWebHistory(),
   routes: [
-    { path: "/", name: "Home", component: Home },
+    { path: '/', name: 'Home', component: Home },
     {
-      path: "/entity_designer",
-      name: "EntityDesigner",
-      component: EntityDesigner,
+      path: '/asset_designer',
+      name: 'AssetDesigner',
+      component: AssetDesigner,
     },
     {
-      path: "/asset_models",
-      name: "AssetModeling",
-      component: AssetModeling,
+      path: '/asset_models',
+      name: 'AssetModels',
+      component: AssetModels,
     },
   ],
 });
 const app = createApp(App);
 app.use(pinia);
 app.use(router);
-app.mount("#app");
+app.mount('#app');
